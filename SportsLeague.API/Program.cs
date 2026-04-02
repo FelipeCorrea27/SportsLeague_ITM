@@ -39,6 +39,8 @@ builder.Services.AddScoped<ITournamentTeamRepository, TournamentTeamRepository>(
 
 builder.Services.AddScoped<ISponsorRepository, SponsorRepository>();
 
+builder.Services.AddScoped<ITournamentSponsorRepository, TournamentSponsorRepository>();
+
 
 // ── Services ──
 
@@ -86,7 +88,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.MapGet("/", () => Results.Redirect("/swagger"));    
 
 
 app.UseHttpsRedirection();

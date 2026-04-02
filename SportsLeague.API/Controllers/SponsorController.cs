@@ -183,6 +183,66 @@ namespace SportsLeague.API.Controllers;
         }
 
     }
+    //Vincular sponsor a torneo
+    [HttpPost("{id}/tournaments")]
+    public async Task<ActionResult<TournamentSponsorResponseDTO>> LinkToTournament(
+        int id,
+        TournamentSponsorRequestDTO dto)
+    {
+        try
+        {
+            var relation = await _sponsorService
+                .LinkToTournamentAsync(id, dto.TournamentId, dto.ContractAmount);
+
+            var response = _mapper.Map<TournamentSponsorResponseDTO>(relation);
+
+            return CreatedAtAction(nameof(GetTournamentsBySponsor), new { id }, response);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+    //Obtener torneos de un sponsor
+    [HttpGet("{id}/tournaments")]
+    public async Task<ActionResult<IEnumerable<TournamentSponsorResponseDTO>>> GetTournamentsBySponsor(int id)
+    {
+        try
+        {
+            var relations = await _sponsorService.GetTournamentsBySponsorAsync(id);
+
+            var response = _mapper.Map<IEnumerable<TournamentSponsorResponseDTO>>(relations);
+
+            return Ok(response);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    //Desvincular sponsor de torneo
+    [HttpDelete("{sponsorId}/tournaments/{tournamentId}")]
+    public async Task<ActionResult> UnlinkFromTournament(int sponsorId, int tournamentId)
+    {
+        try
+        {
+            await _sponsorService.UnlinkFromTournamentAsync(sponsorId, tournamentId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
 
 }
+
+
 
