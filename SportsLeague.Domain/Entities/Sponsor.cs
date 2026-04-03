@@ -9,6 +9,8 @@ namespace SportsLeague.Domain.Entities
         public string? Phone { get; set; }
         public string? WebsiteUrl { get; set; }
         public SponsorCategory Category { get; set; }
+
+        //Navigation Properties 
         public ICollection<TournamentSponsor> TournamentSponsors { get; set; } = new List<TournamentSponsor>();
     }
 }

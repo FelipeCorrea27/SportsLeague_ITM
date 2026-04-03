@@ -15,7 +15,10 @@ namespace SportsLeague.DataAccess.Repositories
         }
         public async Task<bool> ExistsByNameAsync(string name)
         {
-            return await _dbSet.AnyAsync(s => s.Name.ToLower().Trim() == name.ToLower().Trim());
+            var normalized = name.Replace(" ", "").ToLower();
+
+            return await _context.Sponsors
+                .AnyAsync(s => s.Name.Replace(" ", "").ToLower() == normalized);
         }
     }
 }

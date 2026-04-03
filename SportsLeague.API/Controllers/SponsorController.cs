@@ -9,7 +9,6 @@ using SportsLeague.API.DTOs.Response;
 using SportsLeague.Domain.Entities;
 
 using SportsLeague.Domain.Interfaces.Services;
-using SportsLeague.Domain.Services;
 
 
 namespace SportsLeague.API.Controllers;
@@ -20,13 +19,13 @@ namespace SportsLeague.API.Controllers;
 [Route("api/[controller]")]
 
 
-    public class SponsorController : ControllerBase
-    {
-        private readonly ISponsorService _sponsorService;
+public class SponsorController : ControllerBase
+{
+    private readonly ISponsorService _sponsorService;
 
-        private readonly IMapper _mapper;
+    private readonly IMapper _mapper;
 
-        private readonly ILogger<SponsorController> _logger;
+    private readonly ILogger<SponsorController> _logger;
 
     public SponsorController(
 
@@ -38,11 +37,11 @@ namespace SportsLeague.API.Controllers;
 
     {
 
-            _sponsorService = sponsorService;
+        _sponsorService = sponsorService;
 
-            _mapper = mapper;
+        _mapper = mapper;
 
-            _logger = logger;
+        _logger = logger;
 
     }
     [HttpGet]
@@ -80,41 +79,41 @@ namespace SportsLeague.API.Controllers;
     public async Task<ActionResult<SponsorResponseDTO>> Create(SponsorRequestDTO dto)
 
     {
-                try
+        try
 
         {
 
-                    var sponsor = _mapper.Map<Sponsor>(dto);
+            var sponsor = _mapper.Map<Sponsor>(dto);
 
-                    var createdSponsor = await _sponsorService.CreateAsync(sponsor);
-
-
-                    var responseDto = _mapper.Map<SponsorResponseDTO>(createdSponsor);
+            var createdSponsor = await _sponsorService.CreateAsync(sponsor);
 
 
-                    return CreatedAtAction(
+            var responseDto = _mapper.Map<SponsorResponseDTO>(createdSponsor);
 
-                    nameof(GetById),
 
-                    new { id = responseDto.Id },
+            return CreatedAtAction(
 
-                    responseDto);
+            nameof(GetById),
 
-                }
+            new { id = responseDto.Id },
 
-                catch (KeyNotFoundException ex)
+            responseDto);
 
-                    {
+        }
 
-                return NotFound(new { message = ex.Message });
+        catch (KeyNotFoundException ex) //404
 
-                    }
+        {
 
-                catch (InvalidOperationException ex)
+            return NotFound(new { message = ex.Message });
 
-                   {
+        }
 
-                 return Conflict(new { message = ex.Message });
+        catch (InvalidOperationException ex) //409
+
+        {
+
+            return Conflict(new { message = ex.Message });
 
         }
 

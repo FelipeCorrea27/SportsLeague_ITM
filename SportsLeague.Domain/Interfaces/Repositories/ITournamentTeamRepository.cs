@@ -12,4 +12,5 @@ public interface ITournamentTeamRepository : IGenericRepository<TournamentTeam>
 
     Task<IEnumerable<TournamentTeam>> GetByTournamentAsync(int tournamentId);
 
+
 }

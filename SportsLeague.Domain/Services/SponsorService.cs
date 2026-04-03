@@ -49,6 +49,8 @@ namespace SportsLeague.Domain.Services
 
             if (string.IsNullOrWhiteSpace(sponsor.Name))
                 throw new InvalidOperationException("Name is required");
+            sponsor.Name = sponsor.Name.Trim();
+            var normalizedName = sponsor.Name.Replace(" ", "").ToLower();
 
             if (!Regex.IsMatch(sponsor.ContactEmail, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
                 throw new InvalidOperationException("Invalid email format");
@@ -73,16 +75,13 @@ namespace SportsLeague.Domain.Services
             if (string.IsNullOrWhiteSpace(sponsor.Name))
                 throw new InvalidOperationException("Name is required");
 
+            sponsor.Name = sponsor.Name.Trim();
+            var normalizedName = sponsor.Name.Replace(" ", "").ToLower();
+
             if (!Regex.IsMatch(sponsor.ContactEmail, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
                 throw new InvalidOperationException("Invalid email format");
 
-            if (existing.Name != sponsor.Name)
-            {
-                var exists = await _sponsorRepository.ExistsByNameAsync(sponsor.Name);
 
-                if (exists)
-                    throw new InvalidOperationException("Sponsor name already exists");
-            }
 
             existing.Name = sponsor.Name;
             existing.ContactEmail = sponsor.ContactEmail;
