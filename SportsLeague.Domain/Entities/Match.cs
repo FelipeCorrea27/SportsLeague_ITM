@@ -26,6 +26,18 @@ public class Match : AuditBase
 
     public MatchStatus Status { get; set; } = MatchStatus.Scheduled;
 
+    // Relación 1:1 con resultado 
+
+    public MatchResult? MatchResult { get; set; }
+
+
+
+    // Relación 1:N con goles y tarjetas 
+
+    public ICollection<Goal> Goals { get; set; } = new List<Goal>();
+
+    public ICollection<Card> Cards { get; set; } = new List<Card>();
+
 
 
     // Navigation Properties 

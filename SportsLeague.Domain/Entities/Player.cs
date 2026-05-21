@@ -19,6 +19,12 @@ public class Player : AuditBase
 
     public PlayerPosition Position { get; set; }
 
+    public ICollection<Goal> Goals { get; set; } = new List<Goal>();
+
+    public ICollection<Card> Cards { get; set; } = new List<Card>();
+
+
+
 
     // Foreign Key
 
